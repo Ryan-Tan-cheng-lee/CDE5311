@@ -1,6 +1,17 @@
 import streamlit as st
 from streamlit_modal import Modal
+import boto3
+from dotenv import load_dotenv
 
+#dynamodb connection
+load_dotenv()
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('CDE5311')
+
+def response(user_id):
+    return table.get_item(Key={'userId': user_id})
+
+response1=response("001")
 # Title and divider underneath it
 st.title(":green[SHAREON]")
 st.divider()
@@ -32,14 +43,15 @@ with itemCard:
         st.text("Status: Available")
         st.text("Loaner: Ryan Tan")
         openInfo = st.button("More info")
-        openContact = st.button("Contact")
+        openContact = st.button(":black[Contact]")
         if openInfo:
             with more_info.container():
                 st.text("This is a drill tf more u want cb, suck my dick. brokie mofo - xoxo Ryan Tan")
 
         if openContact:
             with contactInfo.container():
-                st.text("+65 999")
-                st.text("mindyourownbusiness@suckacock.com")
+                st.write(f':green[User ID: {response1["Item"]["userId"]}]')
+                st.write(":green[+65 999]")
+                st.write(":green[mindyourownbusiness@suckacock.com]")
 
 st.divider()
